@@ -1,6 +1,7 @@
 // booksContext.tsx
 import React, { createContext, useState, ReactNode, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Alert } from 'react-native';
 
 // Définissez une interface pour les informations du livre
 interface Book {
@@ -76,11 +77,28 @@ const BooksProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   };
 
   const removeBook = (id: string) => {
-    setBooks((prevBooks) => {
-      const updatedBooks = prevBooks.filter((book) => book.id !== id);
-      saveBooks(updatedBooks);
-      return updatedBooks;
-    });
+    Alert.alert(
+      "Confirmation",
+      "Êtes-vous sûr de vouloir supprimer ce livre ?",
+      [
+        {
+          text: "Annuler",
+          style: "cancel"
+        },
+        {
+          text: "Supprimer",
+          style: "destructive",
+          onPress: () => {
+            setBooks((prevBooks) => {
+              const updatedBooks = prevBooks.filter((book) => book.id !== id);
+              saveBooks(updatedBooks);
+              return updatedBooks;
+            });
+          }
+        }
+      ],
+      { cancelable: true }
+    );
   };
 
   const isBookInFavorites = (id: string) => {

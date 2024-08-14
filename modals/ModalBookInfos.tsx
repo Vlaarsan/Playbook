@@ -59,7 +59,7 @@ const ModalBookInfos: React.FC<ModalBookInfosProps> = ({
     >
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
-          <ScrollView>
+          <ScrollView showsVerticalScrollIndicator={false}>
             {imageLinks.thumbnail && (
               <Image
                 style={styles.cover}
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     width: "100%",
-    backgroundColor: "#fff",
+    backgroundColor: "#e9e9e9",
     padding: 35,
     shadowColor: "#000", // Ombre pour effet de profondeur
     shadowOffset: { width: 0, height: 2 },
@@ -134,8 +134,8 @@ const styles = StyleSheet.create({
     alignItems: "center", // Centrer le contenu
   },
   cover: {
-    width: 155,
-    height: 255,
+    width: 200,
+    height: 320,
     alignSelf: "center",
     marginTop: 20,
     marginBottom: 30,

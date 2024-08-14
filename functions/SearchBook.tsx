@@ -12,6 +12,8 @@ import {
 import ModalBookInfos from "../modals/ModalBookInfos";
 import { BooksContext } from "../contexts/BooksContext";
 
+
+
 const SearchBook = () => {
   const [query, setQuery] = useState<string>(""); // État pour stocker la recherche
   const [books, setBooks] = useState<any[]>([]); // État pour stocker les résultats de recherche
@@ -52,7 +54,7 @@ const SearchBook = () => {
       previewLink: book.volumeInfo.previewLink || "",
       imageLinks: book.volumeInfo.imageLinks || {},
     };
-  
+
     if (isBookInFavorites(book.id)) {
       removeBook(book.id);
     } else {
@@ -73,21 +75,22 @@ const SearchBook = () => {
         placeholder="Rechercher un livre"
         value={query}
         onChangeText={setQuery}
+        onSubmitEditing={searchBooks}
       />
       <View style={styles.buttonContainer}>
-        <Button title="Chercher" onPress={searchBooks} />
       </View>
       {loading ? (
         <Text style={styles.loading}>Chargement...</Text>
       ) : (
         <FlatList
+          showsVerticalScrollIndicator={false} // Masquer la barre de défilement verticale
           data={books}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => {
             const book = item.volumeInfo;
             return (
               <View style={styles.bookItem}>
-                <TouchableOpacity onPress={() => openModal(item)} >
+                <TouchableOpacity onPress={() => openModal(item)}>
                   <Image
                     style={styles.cover}
                     source={{
@@ -100,12 +103,12 @@ const SearchBook = () => {
                 <TouchableOpacity onPress={() => openModal(item)}>
                   <View style={styles.bookDetails}>
                     <Text style={styles.title}>{book.title}</Text>
-                    <Text style={styles.text}>
-                      {book.averageRating ? `⭐ ${book.averageRating}` : ""}
-                    </Text>
-                    <Text style={styles.text}>{book.categories}</Text>
                     <Text style={styles.author}>
                       {book.authors?.join(", ")}
+                    </Text>
+                    <Text style={styles.text}>{book.categories}</Text>
+                    <Text style={styles.text}>
+                      {book.averageRating ? `⭐ ${book.averageRating}` : ""}
                     </Text>
                     <TouchableOpacity onPress={() => handleToggleBook(item)}>
                       <Text style={styles.addButton}>
@@ -136,7 +139,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 25,
-    backgroundColor: "#fff",
     width: "100%",
     marginTop: 50,
     borderTopLeftRadius: 25,
@@ -144,11 +146,13 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 40,
-    borderColor: "#ccc",
+    borderColor: "#000", // Contour noir
     borderWidth: 1,
     marginBottom: 30,
     paddingHorizontal: 10,
-    borderRadius: 5,
+    borderRadius:10,
+    textAlign: "center", // Écriture centrée
+    color: "#fff", // Texte en blanc
   },
   loading: {
     textAlign: "center",
@@ -164,33 +168,37 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     marginBottom: 15,
+    
   },
   cover: {
-    width: 85,
-    height: 120,
+    width: 100,
+    height: 160,
     marginRight: 15,
-    borderRadius: 2,
+    borderRadius: 5,
   },
   bookDetails: {
     flex: 1,
     flexShrink: 1,
-    maxWidth: "88%",
+    maxWidth: "85%",
   },
   title: {
     fontSize: 18,
     fontWeight: "bold",
     flexWrap: "wrap",
+    marginBottom:5,
   },
   author: {
-    fontSize: 16,
-    color: "#555",
+    fontSize: 14,
+    color: "#e9e9e9",
+    marginBottom: 20,
   },
   text: {
     marginBottom: 5,
+    fontSize: 14,
   },
   addButton: {
-    marginTop: 10,
-    fontSize: 16,
+    marginTop: 15,
+    fontSize: 14,
     color: "#007BFF",
     fontWeight: "bold",
   },

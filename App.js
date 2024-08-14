@@ -11,30 +11,36 @@ const Tab = createBottomTabNavigator();
 export default function App() {
   return (
     <BooksProvider>
-    <NavigationContainer>
-      <Tab.Navigator
-        screenOptions={({ route }) => ({
-          tabBarIcon: ({ focused, color, size }) => {
-            let iconName;
+      <NavigationContainer>
+        <Tab.Navigator
+          screenOptions={({ route }) => ({
+            tabBarIcon: ({ focused, color, size }) => {
+              let iconName;
 
-            if (route.name === "Home") {
-              iconName = focused ? "home" : "home-outline";
-            } else if (route.name === "My Books") {
-              iconName = focused ? "book" : "book-outline";
-            }
+              if (route.name === "Accueil") {
+                iconName = focused ? "home" : "home-outline";
+              } else if (route.name === "Mes livres") {
+                iconName = focused ? "book" : "book-outline";
+              }
 
-            // Retourner l'icône appropriée
-            return <Ionicons name={iconName} size={size} color={color} />;
-          },
-          tabBarActiveTintColor: "tomato",
-          tabBarInactiveTintColor: "#000",
-          headerShown: false,
-        })}
-      >
-        <Tab.Screen name="Home" component={HomeScreen} />
-        <Tab.Screen name="My Books" component={MyBooksScreen} />
-      </Tab.Navigator>
-    </NavigationContainer>
+              // Retourner l'icône appropriée
+              return <Ionicons name={iconName} size={size} color={color} />;
+            },
+            tabBarActiveTintColor: "tomato",
+            tabBarInactiveTintColor: "#fff",
+            tabBarStyle: {
+              backgroundColor: "black", // Fond noir pour la barre de navigation
+              borderTopWidth: 0, // Supprime le trait en haut de la barre de navigation
+              elevation: 0, // Supprime l'ombre sous Android
+              shadowOpacity: 0, // Supprime l'ombre sous iOS
+            },
+            headerShown: false,
+          })}
+        >
+          <Tab.Screen name="Accueil" component={HomeScreen} />
+          <Tab.Screen name="Mes livres" component={MyBooksScreen} />
+        </Tab.Navigator>
+      </NavigationContainer>
     </BooksProvider>
   );
 }

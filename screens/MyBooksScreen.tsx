@@ -29,10 +29,11 @@ const MyBooksScreen = () => {
   return (
     <View style={styles.container}>
       <FlatList
+        showsVerticalScrollIndicator={false} // Masquer la barre de défilement verticale
         data={books}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => {
-          const book = item; // Pas besoin d'accéder à `item.volumeInfo` ici, car `item` est déjà un objet de type `Book`.
+          const book = item;
 
           return (
             <View style={styles.bookItem}>
@@ -80,6 +81,7 @@ const styles = StyleSheet.create({
     marginTop: 50,
   },
   bookItem: {
+    zIndex:99,
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 15,

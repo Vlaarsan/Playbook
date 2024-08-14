@@ -1,12 +1,13 @@
 import React, { useState } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Image, Text } from "react-native";
 import SearchBook from "../functions/SearchBook";
-import ModalBookInfos from "../modals/ModalBookInfos";
 
 const HomeScreen = () => {
   return (
     <View style={styles.container}>
+      <Text style={styles.title}>PlayBook</Text>
       <SearchBook />
+      
     </View>
   );
 };
@@ -19,6 +20,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#658",
     justifyContent: "center",
     alignItems: "center",
-    
+  },
+  title:{
+    marginTop: 70,
+    fontSize: 36,
+    fontWeight: "bold",
+
   },
 });
