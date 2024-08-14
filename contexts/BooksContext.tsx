@@ -1,47 +1,71 @@
-// BooksContext.tsx
-import React, { createContext, useState, useEffect, ReactNode } from 'react';
+// booksContext.tsx
+import React, { createContext, useState, ReactNode, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+// Définissez une interface pour les informations du livre
 interface Book {
   id: string;
   title: string;
-  // Ajoute d'autres propriétés selon le besoin
+  subtitle?: string;
+  authors?: string[];
+  publishedDate?: string;
+  description?: string;
+  pageCount?: number;
+  categories?: string[];
+  averageRating?: number;
+  ratingsCount?: number;
+  previewLink?: string;
+  imageLinks?: {
+    thumbnail?: string;
+  };
 }
 
+// Définissez l'interface du contexte
 interface BooksContextType {
   books: Book[];
   addBook: (book: Book) => void;
-  removeBook: (bookId: string) => void;
-  isBookInFavorites: (bookId: string) => boolean; // Ajoute cette méthode
+  removeBook: (id: string) => void;
+  isBookInFavorites: (id: string) => boolean;
 }
 
-const BooksContext = createContext<BooksContextType | undefined>(undefined);
+// Créez le contexte avec des valeurs par défaut
+const BooksContext = createContext<BooksContextType>({
+  books: [],
+  addBook: () => {},
+  removeBook: () => {},
+  isBookInFavorites: () => false,
+});
 
+const BOOKS_STORAGE_KEY = '@books';
+
+// Créez le fournisseur du contexte
 const BooksProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [books, setBooks] = useState<Book[]>([]);
 
-  useEffect(() => {
-    const loadBooks = async () => {
-      try {
-        const booksString = await AsyncStorage.getItem('userBooks');
-        if (booksString) {
-          setBooks(JSON.parse(booksString));
-        }
-      } catch (error) {
-        console.error("Erreur lors du chargement des livres : ", error);
-      }
-    };
-
-    loadBooks();
-  }, []);
-
-  const saveBooks = async (books: Book[]) => {
+  // Fonction pour charger les livres depuis AsyncStorage
+  const loadBooks = async () => {
     try {
-      await AsyncStorage.setItem('userBooks', JSON.stringify(books));
+      const storedBooks = await AsyncStorage.getItem(BOOKS_STORAGE_KEY);
+      if (storedBooks) {
+        setBooks(JSON.parse(storedBooks));
+      }
     } catch (error) {
-      console.error("Erreur lors de la sauvegarde des livres : ", error);
+      console.error('Erreur lors du chargement des livres depuis AsyncStorage:', error);
     }
   };
+
+  // Fonction pour sauvegarder les livres dans AsyncStorage
+  const saveBooks = async (books: Book[]) => {
+    try {
+      await AsyncStorage.setItem(BOOKS_STORAGE_KEY, JSON.stringify(books));
+    } catch (error) {
+      console.error('Erreur lors de la sauvegarde des livres dans AsyncStorage:', error);
+    }
+  };
+
+  useEffect(() => {
+    loadBooks();
+  }, []);
 
   const addBook = (book: Book) => {
     setBooks((prevBooks) => {
@@ -51,16 +75,16 @@ const BooksProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     });
   };
 
-  const removeBook = (bookId: string) => {
+  const removeBook = (id: string) => {
     setBooks((prevBooks) => {
-      const updatedBooks = prevBooks.filter(book => book.id !== bookId);
+      const updatedBooks = prevBooks.filter((book) => book.id !== id);
       saveBooks(updatedBooks);
       return updatedBooks;
     });
   };
 
-  const isBookInFavorites = (bookId: string) => {
-    return books.some(book => book.id === bookId);
+  const isBookInFavorites = (id: string) => {
+    return books.some((book) => book.id === id);
   };
 
   return (
@@ -70,4 +94,4 @@ const BooksProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   );
 };
 
-export { BooksProvider, BooksContext };
+export { BooksContext, BooksProvider };

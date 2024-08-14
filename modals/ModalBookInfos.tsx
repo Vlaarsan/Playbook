@@ -27,15 +27,14 @@ const ModalBookInfos: React.FC<ModalBookInfosProps> = ({
   onClose,
   book,
 }) => {
-  if (!book || !book.volumeInfo) {
-    return null; // Si aucun livre ou volumeInfo n'est défini, ne rien afficher
+  if (!book) {
+    return null;
   }
 
   const {
     title = "",
     subtitle = "",
     authors = [],
-    // publisher = "",
     publishedDate = "",
     description = "",
     pageCount = "",
@@ -44,7 +43,7 @@ const ModalBookInfos: React.FC<ModalBookInfosProps> = ({
     ratingsCount = 0,
     previewLink = "",
     imageLinks = {},
-  } = book.volumeInfo;
+  } = book.volumeInfo || book
 
   // Traduire les catégories
   const translatedCategories = categories.map(
@@ -101,7 +100,7 @@ const ModalBookInfos: React.FC<ModalBookInfosProps> = ({
 
             {previewLink ? (
               <TouchableOpacity onPress={() => Linking.openURL(previewLink)}>
-                <Text style={styles.link}>{`🔗 Lire l'Aperçu`}</Text>
+                <Text style={styles.link}>{`🔗 Commencer la lecture`}</Text>
               </TouchableOpacity>
             ) : null}
           </ScrollView>

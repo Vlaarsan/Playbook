@@ -38,14 +38,25 @@ const SearchBook = () => {
 
   // Fonction pour gérer l'ajout ou la suppression d'un livre
   const handleToggleBook = (book: any) => {
+    const bookDetails = {
+      id: book.id,
+      title: book.volumeInfo.title || "",
+      subtitle: book.volumeInfo.subtitle || "",
+      authors: book.volumeInfo.authors || [],
+      publishedDate: book.volumeInfo.publishedDate || "",
+      description: book.volumeInfo.description || "",
+      pageCount: book.volumeInfo.pageCount || 0,
+      categories: book.volumeInfo.categories || [],
+      averageRating: book.volumeInfo.averageRating || 0,
+      ratingsCount: book.volumeInfo.ratingsCount || 0,
+      previewLink: book.volumeInfo.previewLink || "",
+      imageLinks: book.volumeInfo.imageLinks || {},
+    };
+  
     if (isBookInFavorites(book.id)) {
       removeBook(book.id);
     } else {
-      addBook({
-        id: book.id,
-        title: book.volumeInfo.title,
-        // Ajoute d'autres propriétés selon le besoin
-      });
+      addBook(bookDetails);
     }
   };
 
@@ -76,7 +87,7 @@ const SearchBook = () => {
             const book = item.volumeInfo;
             return (
               <View style={styles.bookItem}>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => openModal(item)} >
                   <Image
                     style={styles.cover}
                     source={{
@@ -127,8 +138,9 @@ const styles = StyleSheet.create({
     padding: 25,
     backgroundColor: "#fff",
     width: "100%",
-    marginTop: 25,
-    borderRadius: 25,
+    marginTop: 50,
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
   },
   input: {
     height: 40,
