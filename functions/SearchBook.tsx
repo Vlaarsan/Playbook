@@ -104,10 +104,10 @@ export default SearchBook;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding:25,
+    padding: 25,
     backgroundColor: "#fff",
     width: "100%",
-    marginTop:25,
+    marginTop: 25,
     borderRadius: 25,
   },
   input: {

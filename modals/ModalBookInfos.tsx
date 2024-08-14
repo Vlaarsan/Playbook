@@ -8,8 +8,13 @@ import {
   ScrollView,
   Button,
   Linking,
-  TouchableOpacity
+  TouchableOpacity,
 } from "react-native";
+
+import {
+  categoryTranslations,
+  formatDate,
+} from "../constants/CategoryTranslations";
 
 interface ModalBookInfosProps {
   visible: boolean;
@@ -41,6 +46,11 @@ const ModalBookInfos: React.FC<ModalBookInfosProps> = ({
     imageLinks = {},
   } = book.volumeInfo;
 
+  // Traduire les catégories
+  const translatedCategories = categories.map(
+    (category: string) => categoryTranslations[category] || category
+  );
+
   return (
     <Modal
       visible={visible}
@@ -64,30 +74,26 @@ const ModalBookInfos: React.FC<ModalBookInfosProps> = ({
             {title ? <Text style={styles.title}>{title}</Text> : null}
             {subtitle ? <Text style={styles.subtitle}>{subtitle}</Text> : null}
             {authors.length > 0 && (
-              <Text style={styles.author}>{`🖊️ Auteur : ${authors.join(
-                ", "
-              )}`}</Text>
+              <Text style={styles.author}>{`🖊️ ${authors.join(", ")}`}</Text>
             )}
-            {publisher ? (
-              <Text style={styles.publisher}>{`🏢 Éditeur: ${publisher}`}</Text>
-            ) : null}
+
             {publishedDate ? (
-              <Text
-                style={styles.publishedDate}
-              >{`📅 Date de publication: ${publishedDate}`}</Text>
+              <Text style={styles.publishedDate}>{`📅 ${formatDate(
+                publishedDate
+              )}`}</Text>
             ) : null}
             {averageRating ? (
               <Text style={styles.rating}>
-                {`⭐ ${averageRating} (${ratingsCount} votes)`}
+                {`⭐  ${averageRating} (${ratingsCount} votes)`}
               </Text>
             ) : null}
-            {categories.length > 0 && (
+            {translatedCategories.length > 0 && (
               <Text
                 style={styles.categories}
-              >{`📚 Catégories: ${categories.join(", ")}`}</Text>
+              >{`📚  ${translatedCategories.join(", ")}`}</Text>
             )}
             {pageCount ? (
-              <Text style={styles.pageCount}>{`📚 ${pageCount} Pages`}</Text>
+              <Text style={styles.pageCount}>{`📚  ${pageCount} Pages`}</Text>
             ) : null}
             {description ? (
               <Text style={styles.description}>{description}</Text>
@@ -99,7 +105,9 @@ const ModalBookInfos: React.FC<ModalBookInfosProps> = ({
               </TouchableOpacity>
             ) : null}
           </ScrollView>
-          <Button title="Fermer" onPress={onClose} />
+          <View style={styles.closeButtonContainer}>
+            <Button title="Fermer" onPress={onClose} />
+          </View>
         </View>
       </View>
     </Modal>
@@ -118,7 +126,6 @@ const styles = StyleSheet.create({
   modalContent: {
     width: "100%",
     backgroundColor: "#fff",
-    borderRadius: 15,
     padding: 35,
     shadowColor: "#000", // Ombre pour effet de profondeur
     shadowOffset: { width: 0, height: 2 },
@@ -128,9 +135,10 @@ const styles = StyleSheet.create({
     alignItems: "center", // Centrer le contenu
   },
   cover: {
-    width: 150,
-    height: 225,
+    width: 155,
+    height: 255,
     alignSelf: "center",
+    marginTop: 20,
     marginBottom: 30,
     borderRadius: 10, // Coins arrondis pour l'image
   },
@@ -138,8 +146,8 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     textAlign: "center",
-    marginBottom: 8,
-    color: "#333", // Couleur de texte plus foncée pour le titre
+    marginBottom: 25,
+    color: "#000", // Couleur de texte plus foncée pour le titre
   },
   subtitle: {
     fontSize: 20,
@@ -151,16 +159,12 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginBottom: 15,
     color: "#444", // Couleur légèrement plus claire pour les auteurs
-  },
-  publisher: {
-    fontSize: 18,
-    marginBottom: 15,
-    color: "#444",
+    fontWeight: "bold"
   },
   publishedDate: {
     fontSize: 18,
     marginBottom: 15,
-    color: "#444",
+    color: "#000",
   },
   description: {
     fontSize: 16,
@@ -176,17 +180,26 @@ const styles = StyleSheet.create({
   pageCount: {
     fontSize: 16,
     marginBottom: 12,
-    color: "#444",
+    color: "#000",
   },
   categories: {
     fontSize: 16,
     marginBottom: 8,
-    color: "#444",
+    color: "#000",
   },
   link: {
     fontSize: 16,
     marginBottom: 15,
     color: "#3498db", // Couleur bleue pour les liens
     textDecorationLine: "underline", // Souligner les liens
+  },
+  closeButtonContainer: {
+    position: "absolute",
+    bottom: 10,
+    right: 10,
+    padding: 7,
+    borderRadius: 5,
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
