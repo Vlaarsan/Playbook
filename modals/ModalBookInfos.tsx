@@ -35,7 +35,7 @@ const ModalBookInfos: React.FC<ModalBookInfosProps> = ({
     title = "",
     subtitle = "",
     authors = [],
-    publisher = "",
+    // publisher = "",
     publishedDate = "",
     description = "",
     pageCount = "",
@@ -88,9 +88,9 @@ const ModalBookInfos: React.FC<ModalBookInfosProps> = ({
               </Text>
             ) : null}
             {translatedCategories.length > 0 && (
-              <Text
-                style={styles.categories}
-              >{`📚  ${translatedCategories.join(", ")}`}</Text>
+              <Text style={styles.categories}>{`📚  ${translatedCategories.join(
+                ", "
+              )}`}</Text>
             )}
             {pageCount ? (
               <Text style={styles.pageCount}>{`📚  ${pageCount} Pages`}</Text>
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginBottom: 15,
     color: "#444", // Couleur légèrement plus claire pour les auteurs
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
   publishedDate: {
     fontSize: 18,

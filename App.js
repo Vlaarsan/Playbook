@@ -4,11 +4,13 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from "./screens/HomeScreen";
 import MyBooksScreen from "./screens/MyBooksScreen";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { BooksProvider } from "./contexts/BooksContext";
 
 const Tab = createBottomTabNavigator();
 
 export default function App() {
   return (
+    <BooksProvider>
     <NavigationContainer>
       <Tab.Navigator
         screenOptions={({ route }) => ({
@@ -33,5 +35,6 @@ export default function App() {
         <Tab.Screen name="My Books" component={MyBooksScreen} />
       </Tab.Navigator>
     </NavigationContainer>
+    </BooksProvider>
   );
 }
