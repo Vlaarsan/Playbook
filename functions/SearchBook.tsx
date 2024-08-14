@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   View,
   Text,
@@ -10,11 +10,13 @@ import {
   TouchableOpacity,
 } from "react-native";
 import ModalBookInfos from "../modals/ModalBookInfos";
+import { BooksContext } from "../contexts/BooksContext";
 
 const SearchBook = () => {
   const [query, setQuery] = useState<string>(""); // État pour stocker la recherche
   const [books, setBooks] = useState<any[]>([]); // État pour stocker les résultats de recherche
   const [loading, setLoading] = useState<boolean>(false); // État pour gérer le chargement
+  const { addBook, removeBook, isBookInFavorites } = useContext(BooksContext); // Utilisation du contexte
   const [selectedBook, setSelectedBook] = useState<any>(null); // État pour stocker le livre sélectionné
   const [modalVisible, setModalVisible] = useState<boolean>(false); // État pour contrôler la visibilité de la modal
 
@@ -31,6 +33,19 @@ const SearchBook = () => {
       console.error("Erreur lors de la recherche de livres : ", error);
     } finally {
       setLoading(false); // Fin du chargement
+    }
+  };
+
+  // Fonction pour gérer l'ajout ou la suppression d'un livre
+  const handleToggleBook = (book: any) => {
+    if (isBookInFavorites(book.id)) {
+      removeBook(book.id);
+    } else {
+      addBook({
+        id: book.id,
+        title: book.volumeInfo.title,
+        // Ajoute d'autres propriétés selon le besoin
+      });
     }
   };
 
@@ -81,6 +96,11 @@ const SearchBook = () => {
                     <Text style={styles.author}>
                       {book.authors?.join(", ")}
                     </Text>
+                    <TouchableOpacity onPress={() => handleToggleBook(item)}>
+                      <Text style={styles.addButton}>
+                        {isBookInFavorites(item.id) ? "Enlever" : "+ Ajouter"}
+                      </Text>
+                    </TouchableOpacity>
                   </View>
                 </TouchableOpacity>
               </View>
@@ -155,5 +175,11 @@ const styles = StyleSheet.create({
   },
   text: {
     marginBottom: 5,
+  },
+  addButton: {
+    marginTop: 10,
+    fontSize: 16,
+    color: "#007BFF",
+    fontWeight: "bold",
   },
 });

@@ -12,6 +12,7 @@ interface BooksContextType {
   books: Book[];
   addBook: (book: Book) => void;
   removeBook: (bookId: string) => void;
+  isBookInFavorites: (bookId: string) => boolean; // Ajoute cette méthode
 }
 
 const BooksContext = createContext<BooksContextType | undefined>(undefined);
@@ -58,8 +59,12 @@ const BooksProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     });
   };
 
+  const isBookInFavorites = (bookId: string) => {
+    return books.some(book => book.id === bookId);
+  };
+
   return (
-    <BooksContext.Provider value={{ books, addBook, removeBook }}>
+    <BooksContext.Provider value={{ books, addBook, removeBook, isBookInFavorites }}>
       {children}
     </BooksContext.Provider>
   );
