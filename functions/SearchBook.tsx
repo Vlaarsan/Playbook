@@ -9,11 +9,14 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
+import ModalBookInfos from "../modals/ModalBookInfos";
 
 const SearchBook = () => {
   const [query, setQuery] = useState<string>(""); // État pour stocker la recherche
   const [books, setBooks] = useState<any[]>([]); // État pour stocker les résultats de recherche
   const [loading, setLoading] = useState<boolean>(false); // État pour gérer le chargement
+  const [selectedBook, setSelectedBook] = useState<any>(null); // État pour stocker le livre sélectionné
+  const [modalVisible, setModalVisible] = useState<boolean>(false); // État pour contrôler la visibilité de la modal
 
   // Fonction pour effectuer la recherche
   const searchBooks = async () => {
@@ -29,6 +32,12 @@ const SearchBook = () => {
     } finally {
       setLoading(false); // Fin du chargement
     }
+  };
+
+  // Fonction pour ouvrir la modal avec les détails du livre sélectionné
+  const openModal = (book: any) => {
+    setSelectedBook(book);
+    setModalVisible(true);
   };
 
   return (
@@ -62,7 +71,7 @@ const SearchBook = () => {
                     }}
                   />
                 </TouchableOpacity>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => openModal(item)}>
                   <View style={styles.bookDetails}>
                     <Text style={styles.title}>{book.title}</Text>
                     <Text style={styles.text}>
@@ -79,6 +88,13 @@ const SearchBook = () => {
           }}
         />
       )}
+      {selectedBook && (
+        <ModalBookInfos
+          visible={modalVisible}
+          onClose={() => setModalVisible(false)}
+          book={selectedBook}
+        />
+      )}
     </View>
   );
 };
@@ -88,9 +104,10 @@ export default SearchBook;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    padding:25,
     backgroundColor: "#fff",
     width: "100%",
+    marginTop:25,
     borderRadius: 25,
   },
   input: {

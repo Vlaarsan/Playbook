@@ -1,6 +1,7 @@
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import SearchBook from '../functions/SearchBook';
+import React, { useState } from "react";
+import { View, StyleSheet } from "react-native";
+import SearchBook from "../functions/SearchBook";
+import ModalBookInfos from "../modals/ModalBookInfos";
 
 const HomeScreen = () => {
   return (
@@ -15,9 +16,9 @@ export default HomeScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#658',
+    backgroundColor: "#658",
     padding: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
