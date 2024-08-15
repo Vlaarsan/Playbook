@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Image, Text } from "react-native";
+import { View, StyleSheet, Text } from "react-native";
 import SearchBook from "../functions/SearchBook";
+
 
 const HomeScreen = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>PlayBook</Text>
       <SearchBook />
-      
     </View>
   );
 };
@@ -21,10 +21,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  title:{
+  title: {
     marginTop: 70,
     fontSize: 36,
-    fontWeight: "bold",
-
+    fontFamily: "DancingScript_400Regular",
   },
 });

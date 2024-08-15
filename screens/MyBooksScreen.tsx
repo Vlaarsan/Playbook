@@ -110,6 +110,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderColor: "#333",
     borderWidth:0.5,
+    
   },
   cover: {
     width: 85,
@@ -124,10 +125,13 @@ const styles = StyleSheet.create({
   author: {
     fontSize: 16,
     color: "#555",
+    fontFamily: "DancingScript_400Regular",
+
   },
   title: {
     fontSize: 18,
     fontWeight: "bold",
+    
   },
   removeButton: {
     marginTop: 25,

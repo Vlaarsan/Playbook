@@ -5,10 +5,21 @@ import HomeScreen from "./screens/HomeScreen";
 import MyBooksScreen from "./screens/MyBooksScreen";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { BooksProvider } from "./contexts/BooksContext";
+import {
+  useFonts,
+  DancingScript_400Regular,
+} from "@expo-google-fonts/dancing-script";
 
 const Tab = createBottomTabNavigator();
 
 export default function App() {
+  let [fontsLoaded] = useFonts({
+    DancingScript_400Regular,
+  });
+
+  if (!fontsLoaded) {
+    return null;
+  }
   return (
     <BooksProvider>
       <NavigationContainer>
