@@ -76,6 +76,7 @@ const SearchBook = () => {
         value={query}
         onChangeText={setQuery}
         onSubmitEditing={searchBooks}
+        placeholderTextColor={"#e9e9e9"}
       />
       <View style={styles.buttonContainer}>
       </View>
@@ -147,7 +148,7 @@ const styles = StyleSheet.create({
   input: {
     height: 40,
     borderColor: "#000", // Contour noir
-    borderWidth: 1,
+    borderBottomWidth: 1,
     marginBottom: 30,
     paddingHorizontal: 10,
     borderRadius:10,
