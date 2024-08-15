@@ -108,6 +108,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 5,
     padding: 10,
+    borderColor: "#333",
+    borderWidth:0.5,
   },
   cover: {
     width: 85,
