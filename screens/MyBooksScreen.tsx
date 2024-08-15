@@ -12,7 +12,7 @@ import { MaterialIcons } from "@expo/vector-icons"; // Assurez-vous d'avoir inst
 import ModalBookInfos from "../modals/ModalBookInfos"; // Import du composant ModalBookInfos
 
 const MyBooksScreen = () => {
-  const { books, removeBook } = useContext(BooksContext);
+  const { books, removeBook, toggleBookReadStatus } = useContext(BooksContext);
   const [selectedBook, setSelectedBook] = useState<any>(null);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
 
@@ -37,26 +37,41 @@ const MyBooksScreen = () => {
 
           return (
             <View style={styles.bookItem}>
-              <Image
-                style={styles.cover}
-                source={{
-                  uri:
-                    book.imageLinks?.thumbnail ||
-                    "https://via.placeholder.com/128x196.png?text=No+Image",
-                }}
-              />
+              <TouchableOpacity onPress={() => handleBookPress(book)}>
+                <Image
+                  style={styles.cover}
+                  source={{
+                    uri:
+                      book.imageLinks?.thumbnail ||
+                      "https://via.placeholder.com/128x196.png?text=No+Image",
+                  }}
+                />
+              </TouchableOpacity>
+
               <View style={styles.bookDetails}>
                 <TouchableOpacity onPress={() => handleBookPress(book)}>
                   <Text style={styles.title}>{book.title}</Text>
-                  <Text style={styles.author}>
-                      {book.authors?.join(", ")}
-                    </Text>
                 </TouchableOpacity>
+                <TouchableOpacity
+                  style={[
+                    styles.readButton,
+                    item.lu
+                      ? styles.readButtonActive
+                      : styles.readButtonInactive,
+                  ]}
+                  onPress={() => toggleBookReadStatus(item.id)}
+                >
+                  <Text style={styles.readButtonText}>
+                    {item.lu ? "Lu" : "Non lu"}
+                  </Text>
+                </TouchableOpacity>
+                <Text style={styles.author}>{book.authors?.join(", ")}</Text>
+
                 <TouchableOpacity
                   style={styles.removeButton}
                   onPress={() => removeBook(book.id)}
                 >
-                  <MaterialIcons name="delete" size={24} color="white" />
+                  <MaterialIcons name="delete" size={24} color="#d84545" />
                 </TouchableOpacity>
               </View>
             </View>
@@ -81,17 +96,18 @@ const styles = StyleSheet.create({
     marginTop: 50,
   },
   bookItem: {
-    zIndex:99,
+    zIndex: 99,
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 15,
-    backgroundColor: "#fff",
-    borderRadius: 8,
+    marginBottom: 10,
+    backgroundColor: "rgba(198, 170, 220, 0.4)",
+    borderRadius: 20,
     overflow: "hidden",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 5,
+    padding: 10,
   },
   cover: {
     width: 85,
@@ -114,11 +130,26 @@ const styles = StyleSheet.create({
   removeButton: {
     marginTop: 25,
     alignItems: "center",
-    backgroundColor: "#d9534f",
-    borderRadius: 50,
     width: 25,
     height: 25,
-    justifyContent: "center",
+  },
+
+  readButton: {
+    position: "absolute",
+    bottom: 5,
+    right: 10,
+    padding: 10,
+    borderRadius: 15,
+  },
+  readButtonActive: {
+    backgroundColor: "green",
+  },
+  readButtonInactive: {
+    backgroundColor: "gray",
+  },
+  readButtonText: {
+    color: "#fff",
+    fontWeight: "bold",
   },
 });
 

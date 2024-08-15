@@ -16,7 +16,7 @@ export const categoryTranslations = {
     const date = new Date(dateString);
     return date.toLocaleDateString('fr-FR', {
       day: 'numeric',
-      month: 'long', // Affiche le mois en toute lettre
+      month: 'long',
       year: 'numeric',
     });
   };

@@ -6,6 +6,7 @@ import { Alert } from 'react-native';
 // Définissez une interface pour les informations du livre
 interface Book {
   id: string;
+  lu?: boolean;
   title: string;
   subtitle?: string;
   authors?: string[];
@@ -27,6 +28,7 @@ interface BooksContextType {
   addBook: (book: Book) => void;
   removeBook: (id: string) => void;
   isBookInFavorites: (id: string) => boolean;
+  toggleBookReadStatus: (id: string) => void;
 }
 
 // Créez le contexte avec des valeurs par défaut
@@ -35,6 +37,7 @@ const BooksContext = createContext<BooksContextType>({
   addBook: () => {},
   removeBook: () => {},
   isBookInFavorites: () => false,
+  toggleBookReadStatus: () => false
 });
 
 const BOOKS_STORAGE_KEY = '@books';
@@ -105,8 +108,19 @@ const BooksProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     return books.some((book) => book.id === id);
   };
 
+  // Fonction pour dire si un livre a été lu
+const toggleBookReadStatus = (id: string) => {
+  setBooks((prevBooks) => {
+    const updatedBooks = prevBooks.map((book) => 
+      book.id === id ? { ...book, lu: !book.lu } : book
+    );
+    saveBooks(updatedBooks);
+    return updatedBooks;
+  });
+};
+
   return (
-    <BooksContext.Provider value={{ books, addBook, removeBook, isBookInFavorites }}>
+    <BooksContext.Provider value={{ books, addBook, removeBook, isBookInFavorites, toggleBookReadStatus }}>
       {children}
     </BooksContext.Provider>
   );
